@@ -1,0 +1,149 @@
+name: my-java-project
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+
+    env_file:
+      - .env
+
+    ports:
+      - "${APP_PORT}:8080"
+
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      elasticsearch:
+        condition: service_healthy
+
+    networks:
+      - backend
+
+  postgres:
+    image: postgres:${POSTGRES_VERSION}
+
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "${POSTGRES_PORT}:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+    networks:
+      - backend
+
+  redis:
+    image: redis:${REDIS_VERSION}
+
+    restart: unless-stopped
+
+    command: redis-server --appendonly yes
+
+    ports:
+      - "${REDIS_PORT}:6379"
+
+    volumes:
+      - redis_data:/data
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+    networks:
+      - backend
+
+  elasticsearch:
+    image: elastic/elasticsearch:${ELASTIC_VERSION}
+
+    restart: unless-stopped
+
+    environment:
+      discovery.type: single-node
+      xpack.security.enabled: "false"
+      ES_JAVA_OPTS: "${ES_JAVA_OPTS}"
+
+    ports:
+      - "${ELASTICSEARCH_PORT}:9200"
+
+    volumes:
+      - elasticsearch_data:/usr/share/elasticsearch/data
+
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "curl -fs http://localhost:9200 >/dev/null || exit 1"
+        ]
+      interval: 20s
+      timeout: 10s
+      retries: 10
+
+    networks:
+      - backend
+
+  kibana:
+    image: elastic/kibana:${KIBANA_VERSION}
+
+    restart: unless-stopped
+
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+    environment:
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+
+    ports:
+      - "${KIBANA_PORT}:5601"
+
+    networks:
+      - backend
+
+  filebeat:
+    image: elastic/filebeat:${FILEBEAT_VERSION}
+
+    restart: unless-stopped
+
+    user: root
+
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+
+    command: filebeat -e --strict.perms=false
+
+    volumes:
+      - ./docker/filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+      - ./logs:/logs:ro
+
+    networks:
+      - backend
+
+networks:
+  backend:
+
+volumes:
+  postgres_data:
+  redis_data:
+  elasticsearch_data:
