@@ -1,0 +1,27 @@
+<configuration>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>logs/application.log</file>
+
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+
+            <fileNamePattern>
+                logs/application-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+
+            <maxFileSize>100MB</maxFileSize>
+
+        </rollingPolicy>
+
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="FILE"/>
+    </root>
+
+</configuration>

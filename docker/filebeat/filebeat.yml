@@ -1,0 +1,13 @@
+filebeat.inputs:
+
+  - type: filestream
+
+    enabled: true
+
+    id: springboot
+
+    paths:
+      - /logs/application.log
+
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
