@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -23,5 +24,5 @@ public class User extends AuditEntity{
     private String username;
     private String password;
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    private HashSet<UserRoles> userRoles;
+    private List<UserRoles> userRoles;
 }

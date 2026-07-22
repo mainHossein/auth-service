@@ -1,10 +1,12 @@
 package com.example.authservice.service;
 
+import com.example.authservice.database.entity.User;
 import com.example.authservice.database.repository.UserRepository;
 import com.example.authservice.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,8 @@ public class UserService {
     private final UserRepository userRepository;
 
     public ResponseEntity<Page<UserInfoDto>> findAll(Pageable pageable) {
-        return null;
+        Page<User> allUsers = userRepository.findAll(pageable);
+        return new ResponseEntity<>(allUsers.getContent(), HttpStatus.OK);
     }
 
     public ResponseEntity<UserInfoDto> findByUsername(String username) {

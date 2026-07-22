@@ -1,10 +1,9 @@
 package com.example.authservice.dto;
 
-import com.example.authservice.database.entity.UserRoles;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
+import java.util.List;
 
 @Getter
 @Setter
@@ -13,7 +12,7 @@ import java.util.HashSet;
 @Builder
 public class UserInfoDto {
     private String username;
-    private HashSet<UserRoles> userRoles;
+    private List<String> userRoles;
     private Timestamp createdAt;
 
 }
