@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class UserService {
     private final UserInfoMapper userInfoMapper;
     private final UserCreateMapper userCreateMapper;
     private final UserUpdateMapper userUpdateMapper;
+    private final PasswordEncoder passwordEncoder;
 
     public ResponseEntity<Page<UserInfoDto>> findAll(Pageable pageable) {
         Page<User> users = userRepository.findAll(pageable);
@@ -45,7 +47,9 @@ public class UserService {
 
     public ResponseEntity<UserInfoDto> create(UserCreateDto user) {
         checkDuplicateUser(user.getUsername());
-        User savedUser = userRepository.save(userCreateMapper.toSource(user));
+        User source = userCreateMapper.toSource(user);
+        source.setPassword(passwordEncoder.encode(user.getPassword()));
+        User savedUser = userRepository.save(source);
         return new ResponseEntity<>(userInfoMapper.toDestination(savedUser), HttpStatus.CREATED);
     }
 
@@ -60,8 +64,8 @@ public class UserService {
     public ResponseEntity<ResponseDto> updatePassword(String username, PasswordDto password) {
         User fetchedUser = userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException(
                 "user with username %s not found".formatted(username)));
-        fetchedUser.setPassword(password.getPassword());
-        User savedUser = userRepository.save(fetchedUser);
+        fetchedUser.setPassword(passwordEncoder.encode(password.getPassword()));
+        userRepository.save(fetchedUser);
         return new ResponseEntity<>(new ResponseDto("password is updated"), HttpStatus.OK);
     }
 
