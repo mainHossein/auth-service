@@ -21,5 +21,5 @@ public class UserCreateDto {
     private String password;
     @NotNull(message = "roles couldn't be null")
     @NotBlank(message = "at least one role is required")
-    private HashSet<UserRoles> userRoles;
+    private HashSet<String> userRoles;
 }

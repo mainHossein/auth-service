@@ -1,9 +1,6 @@
 package com.example.authservice.mapper;
 
-import org.mapstruct.BeanMapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Named;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -13,7 +10,6 @@ import java.util.List;
  * @param <S> - Source type parameter.
  * @param <D> - Destination parameter.
  */
-
 public interface BaseMapper<S, D> {
     S toSource(D destination);
 

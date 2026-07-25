@@ -1,6 +1,9 @@
 package com.example.authservice.dto;
 
 import com.example.authservice.database.entity.UserRoles;
+import com.example.authservice.database.enumerated.Role;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.util.HashSet;
@@ -11,6 +14,10 @@ import java.util.HashSet;
 @AllArgsConstructor
 @Builder
 public class UserUpdateDto {
+    @NotNull(message = "username couldn't be null")
+    @NotBlank(message = "username is required")
     private String username;
-    private HashSet<UserRoles> userRoles;
+    @NotNull(message = "roles couldn't be null")
+    @NotBlank(message = "at least one role is required")
+    private HashSet<String> userRoles;
 }
