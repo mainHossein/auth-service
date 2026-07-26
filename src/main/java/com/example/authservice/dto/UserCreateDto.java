@@ -20,6 +20,5 @@ public class UserCreateDto {
     @NotBlank(message = "password couldn't be empty")
     private String password;
     @NotNull(message = "roles couldn't be null")
-    @NotBlank(message = "at least one role is required")
     private HashSet<String> userRoles;
 }
