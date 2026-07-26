@@ -27,4 +27,8 @@ public class UserRoles extends AuditEntity{
     private User user;
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public UserRoles(Role role) {
+        this.role = role;
+    }
 }
