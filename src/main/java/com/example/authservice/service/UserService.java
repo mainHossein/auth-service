@@ -69,6 +69,7 @@ public class UserService {
         return new ResponseEntity<>(new ResponseDto("password is updated"), HttpStatus.OK);
     }
 
+    @Transactional
     public ResponseEntity<ResponseDto> delete(String username) {
         userRepository.deleteByUsername(username);
         return new ResponseEntity<>(new ResponseDto("user is deleted"), HttpStatus.NO_CONTENT);
