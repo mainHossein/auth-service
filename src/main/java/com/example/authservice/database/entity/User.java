@@ -22,6 +22,6 @@ public class User extends AuditEntity{
     private UUID id;
     private String username;
     private String password;
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<UserRoles> userRoles;
 }
