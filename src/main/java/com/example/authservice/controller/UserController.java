@@ -51,7 +51,7 @@ public class UserController {
     }
 
     @Operation(summary = "Delete users")
-    @PatchMapping("/delete/{username}")
+    @DeleteMapping("/delete/{username}")
     public ResponseEntity<ResponseDto> deleteUser(@PathVariable String username) {
         return userService.delete(username);
     }
