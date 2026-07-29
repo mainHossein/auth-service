@@ -5,6 +5,6 @@ import com.example.authservice.dto.UserInfoDto;
 import org.mapstruct.Mapper;
 
 
-@Mapper(componentModel = "spring", uses = {RoleStringMapper.class})
+@Mapper(componentModel = "spring", uses = {UserRoleMapper.class})
 public interface UserInfoMapper extends BaseMapper<User, UserInfoDto> {
 }

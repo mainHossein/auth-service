@@ -6,7 +6,7 @@ import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 
-@Mapper(componentModel = "spring", uses = {RoleStringMapper.class})
+@Mapper(componentModel = "spring", uses = {UserRoleMapper.class})
 public interface UserCreateMapper extends BaseMapper<User, UserCreateDto>{
 
     @AfterMapping
