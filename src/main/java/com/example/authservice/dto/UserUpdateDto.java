@@ -18,6 +18,5 @@ public class UserUpdateDto {
     @NotBlank(message = "username is required")
     private String username;
     @NotNull(message = "roles couldn't be null")
-    @NotBlank(message = "at least one role is required")
     private HashSet<String> userRoles;
 }
