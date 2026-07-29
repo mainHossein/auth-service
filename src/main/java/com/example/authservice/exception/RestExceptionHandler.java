@@ -18,7 +18,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DuplicateUserException.class)
     protected ResponseEntity<ApiError> handleDuplicateUserException(DuplicateUserException ex) {
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, ex.getMessage());
-        return  buildResponseEntity(apiError);
+        return buildResponseEntity(apiError);
     }
 
     private ResponseEntity<ApiError> buildResponseEntity(ApiError apiError) {
