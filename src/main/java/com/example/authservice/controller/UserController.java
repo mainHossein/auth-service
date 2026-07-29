@@ -11,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -36,11 +38,18 @@ public class UserController {
         return userService.create(user);
     }
 
-    @Operation(summary = "Update users")
-    @PatchMapping("/update-user/{username}")
-    public ResponseEntity<UserInfoDto> updateUser(@PathVariable String username,
-                                                  @Valid @RequestBody UserUpdateDto user) {
-        return userService.update(username, user);
+    @Operation(summary = "grant roles to users")
+    @PatchMapping("/grant-roles/{username}")
+    public ResponseEntity<UserInfoDto> grantRoles(@PathVariable String username,
+                                                @RequestBody HashSet<String> roles) {
+        return userService.grantRoles(username, roles);
+    }
+
+    @Operation(summary = "revoke roles from users")
+    @PatchMapping("/revoke-roles/{username}")
+    public ResponseEntity<UserInfoDto> revokeRoles(@PathVariable String username,
+                                                  @RequestBody HashSet<String> roles) {
+        return userService.revokeRoles(username, roles);
     }
 
     @Operation(summary = "Reset users password")
