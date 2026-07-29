@@ -31,4 +31,9 @@ public class UserRoles extends AuditEntity{
     public UserRoles(Role role) {
         this.role = role;
     }
+
+    public UserRoles(User user, Role role) {
+        this.user = user;
+        this.role = role;
+    }
 }
