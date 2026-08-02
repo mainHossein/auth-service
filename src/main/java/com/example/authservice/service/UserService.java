@@ -6,6 +6,7 @@ import com.example.authservice.database.enumerated.Role;
 import com.example.authservice.database.repository.UserRepository;
 import com.example.authservice.dto.*;
 import com.example.authservice.exception.DuplicateUserException;
+import com.example.authservice.exception.InvalidRoleException;
 import com.example.authservice.exception.UsernameNotFoundException;
 import com.example.authservice.mapper.UserCreateMapper;
 import com.example.authservice.mapper.UserInfoMapper;
@@ -49,6 +50,11 @@ public class UserService {
         checkDuplicateUser(user.getUsername());
         HashSet<String> uppercaseRoles = new HashSet<>();
         user.getUserRoles().forEach(userRole -> {
+            try {
+                Role.valueOf(userRole);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidRoleException("this role is not valid: " + userRole);
+            }
             uppercaseRoles.add(userRole.toUpperCase());
         });
         user.getUserRoles().clear();
@@ -64,6 +70,11 @@ public class UserService {
                 "user with username %s not found".formatted(username)));
         HashSet<String> uppercaseRoles = new HashSet<>();
         roles.forEach(userRole -> {
+            try {
+                Role.valueOf(userRole);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidRoleException("this role is not valid: " + userRole);
+            }
             uppercaseRoles.add(userRole.toUpperCase());
         });
         roles.clear();
@@ -87,6 +98,11 @@ public class UserService {
                 "user with username %s not found".formatted(username)));
         HashSet<String> uppercaseRoles = new HashSet<>();
         roles.forEach(userRole -> {
+            try {
+                Role.valueOf(userRole);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidRoleException("this role is not valid: " + userRole);
+            }
             uppercaseRoles.add(userRole.toUpperCase());
         });
         roles.clear();
