@@ -1,9 +1,12 @@
 package com.example.authservice.database.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.jspecify.annotations.NullMarked;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,7 +19,10 @@ import java.util.UUID;
                 @UniqueConstraint(columnNames = "username")
         }
 )
-public class User extends AuditEntity{
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class User extends AuditEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -24,4 +30,10 @@ public class User extends AuditEntity{
     private String password;
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<UserRoles> userRoles;
+
+    @NullMarked
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
 }
