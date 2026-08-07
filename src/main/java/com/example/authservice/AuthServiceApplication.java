@@ -16,10 +16,10 @@ public class AuthServiceApplication {
 
     private static void printServerInfo(Integer port, String contextPath) {
         System.out.printf("""
-                                  -------------------------------------------------------
-                                  | Server URL: http://localhost:%d                     |
-                                  | Swagger URL: http://localhost:%d%s/swagger-ui.html  |
-                                  -------------------------------------------------------
+                                  -------------------------------------------------------------
+                                  | Server URL: http://localhost:%d                         |
+                                  | Swagger URL: http://localhost:%d%s/swagger-ui/index.html  |
+                                  -------------------------------------------------------------
                                   %n""", port, port, contextPath);
     }
 
