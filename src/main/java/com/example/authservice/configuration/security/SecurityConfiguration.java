@@ -17,10 +17,10 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/swagger-ui/**",
-                                        "/v3/api-docs/**")
+                        request.requestMatchers("/swagger-ui.html/**",
+                                        "/v3/api-docs/**", "/auth/login")
                                 .permitAll()
-                                .anyRequest().permitAll());
+                                .anyRequest().authenticated());
         return http.build();
     }
 

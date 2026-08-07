@@ -27,6 +27,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
+    @ExceptionHandler(InvalidCredentialException.class)
+    protected ResponseEntity<ApiError> handleInvalidCredentialException(InvalidCredentialException ex) {
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
     private ResponseEntity<ApiError> buildResponseEntity(ApiError apiError) {
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
